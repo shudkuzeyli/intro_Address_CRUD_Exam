@@ -1,0 +1,32 @@
+﻿@model intro_Address_CRUD_Exam.Models.Country
+
+<style>
+	.butonuSagaTasi {
+		display: flex;
+		justify-content: flex-end;
+		/* padding:10px; */
+		padding-right: 3px;
+		/* border:1px solid #ccc */
+	}
+</style>
+
+<form asp-controller="Country" asp-action="Create" method="post">
+
+	<div class="mb-3">
+		<label asp-for="Descp" class="form-label">Ülke</label>
+		<input asp-for="Descp" class="form-control" />
+		<span asp-validation-for="Descp" class="text-danger"></span>
+	</div>
+
+
+	<div class="mb-3">
+		<label class="form-check-label">
+			<input class="form-check-input" asp-for="Aktif" />
+			@Html.DisplayNameFor(model => model.Aktif)
+		</label>
+	</div>
+	<div class="butonuSagaTasi">
+		<a class="btn btn-secondary mr-5" asp-action="Index"><i class="fa fa-arrow-alt-circle-left"></i> Listeye geri dön</a>
+		<button type="submit" class="btn btn-success">Kaydet</button>
+	</div>
+</form>

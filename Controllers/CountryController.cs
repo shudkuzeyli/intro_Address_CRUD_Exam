@@ -27,15 +27,40 @@ namespace intro_Address_CRUD_Exam.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Crete() 
+		public IActionResult Create() 
 		{ 
 		return View();
 		}
 
 		[HttpPost]
-		public IActionResult Crete(Country c)
+		public IActionResult Create(Country c)
 		{
-			return View();
+			if (c is null)
+			{
+				//return RedirectToAction("Index");
+				return RedirectToAction(nameof(Index));
+			}
+
+			if (ModelState.IsValid != false)
+			{
+				return View(c);
+			}
+			//Eğer kullanici tarafından gönderilen Kullanici modelindeki email bilgisi veritabanında var mı? kontrolü yapıyoruz.
+			//Linq -> nesneler içerisinde arama/sorgulama yapmamıza yarayan betik işlemler kümesi.
+
+			var ulkeliste = _dataContext.Country.Where(t => t.Descp == c.Descp).FirstOrDefault();
+			if (ulkeliste != null)
+			{
+				//gönerilen mail adresi zaten veritabanında varmış.
+				ModelState.AddModelError("Descp", "Bu ülke listede mevcut.");
+				return View(c);
+			}
+
+			//_dataContext.Kullanici.Add(k);
+			_dataContext.Add(c);
+			_dataContext.SaveChanges();
+
+			return RedirectToAction(nameof(Index));
 		}
 
 
