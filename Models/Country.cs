@@ -11,5 +11,10 @@ namespace intro_Address_CRUD_Exam.Models
 		public string Descp { get; set; }
 
 		public ICollection<City> CityList { get; set; }
+
+		[ScaffoldColumn(false)]
+		[Browsable(false)]
+		public string UlkeKodu => Descp + " (+90)";
+
 	}
 }
