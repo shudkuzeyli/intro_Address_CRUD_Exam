@@ -66,27 +66,112 @@ namespace intro_Address_CRUD_Exam.Controllers
 
 		public IActionResult Edit(int? id)
 		{
-			return View();
-		}
+			if (id is null)
+				return RedirectToAction(nameof(Index));
 
+			var edit = _dataContext.Country.Where(e => e.Id == id).FirstOrDefault();
+			if (edit is null)
+				return RedirectToAction(nameof(Index));
+
+			return View(edit);
+		}
 
 		[HttpPost]
 		public IActionResult Edit(Country c ,int? id)
 		{
-			return View();
+			if (id is null)
+				return RedirectToAction(nameof(Index));
+
+			if (c.Id != id)
+				return RedirectToAction(nameof(Index));
+
+			if (_dataContext.Country.Any(e => e.Id == id) == false)
+				return RedirectToAction(nameof(Index));
+
+			if (_dataContext.Country.Any(t => t.Descp == c.Descp.Trim() && t.Id != c.Id))
+			{
+				ModelState.AddModelError("Descp", "Ülke listede mevcut");
+				return View(c);
+			}
+
+			if (ModelState.IsValid == false)
+			{
+				try
+				{
+					var dbdekiData = _dataContext.Country.FirstOrDefault(e => e.Id == id);
+
+					dbdekiData.Descp = c.Descp;					
+					dbdekiData.Aktif = c.Aktif;
+
+					_dataContext.Update(dbdekiData);
+					_dataContext.SaveChanges();
+				}
+				catch (Exception e)
+				{
+					//loga yazılacak.
+					ModelState.AddModelError("Descp", $"Inner Exep. : {e.Message}");
+					return View(c);
+				}
+			}
+
+			return RedirectToAction(nameof(Index));
 		}
 
 		[HttpGet]
 		public IActionResult Delete(int? id)
 		{
-			return View();
+			if (id is null)
+				return RedirectToAction(nameof(Index));
+
+			var edit = _dataContext.Country.Where(e => e.Id == id).FirstOrDefault();
+			if (edit is null)
+				return RedirectToAction(nameof(Index));
+
+			return View(edit);
 		}
 
 		[HttpPost, ActionName ("DeleteConfirm")]
 		[ValidateAntiForgeryToken]
 		public IActionResult DeleteConfirm(int? id)
 		{
-			return View();
+			if (id != null)
+
+			{
+				try
+				{
+					var dbdekiData = _dataContext.Country.FirstOrDefault(e => e.Id == id);
+					if (dbdekiData is null)
+					{
+						return RedirectToAction(nameof(Index));
+					}
+
+					_dataContext.Remove(dbdekiData);
+					_dataContext.SaveChanges();
+
+					return RedirectToAction(nameof(Index));
+				}
+				catch (Exception e)
+				{
+					//loga yazılacak.
+					ModelState.AddModelError("Descp", $"Inner Exep. : {e.Message}");
+					return View();
+				}
+			}
+
+			return RedirectToAction(nameof(Index));
+		}
+
+		[HttpGet]
+		public IActionResult Detail(int? id)
+		{
+			if (id is null)
+				return RedirectToAction(nameof(Index));
+
+			var edit = _dataContext.Country.Where(e => e.Id == id).FirstOrDefault();
+			if (edit is null)
+				return RedirectToAction(nameof(Index));
+
+			return View(edit);
 		}
 	}
 }

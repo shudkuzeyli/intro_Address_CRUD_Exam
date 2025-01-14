@@ -21,6 +21,5 @@ namespace intro_Address_CRUD_Exam.Models
 		//bu model, bir grid ya da table a datasource oalrak bağlanmışsa arayüzde göster/gösterme seçmemizi sağlıyor
 		public string AktifString => Aktif ? "Aktif" : "Pasif";
 
-
 	}
 }
