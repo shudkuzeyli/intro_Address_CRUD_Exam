@@ -100,7 +100,8 @@ namespace intro_Address_CRUD_Exam.Controllers
 				{
 					var dbdekiData = _dataContext.Country.FirstOrDefault(e => e.Id == id);
 
-					dbdekiData.Descp = c.Descp;					
+					dbdekiData.Descp = c.Descp;
+					dbdekiData.CountryCode = c.CountryCode;
 					dbdekiData.Aktif = c.Aktif;
 
 					_dataContext.Update(dbdekiData);

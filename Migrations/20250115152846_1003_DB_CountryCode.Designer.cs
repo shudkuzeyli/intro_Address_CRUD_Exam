@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using intro_Address_CRUD_Exam.Context;
 
@@ -10,9 +11,11 @@ using intro_Address_CRUD_Exam.Context;
 namespace intro_Address_CRUD_Exam.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250115152846_1003_DB_CountryCode")]
+    partial class _1003_DB_CountryCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,9 +131,6 @@ namespace intro_Address_CRUD_Exam.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descp")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -139,8 +139,6 @@ namespace intro_Address_CRUD_Exam.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("CountryId");
 
                     b.ToTable("Ilce");
                 });
@@ -191,15 +189,7 @@ namespace intro_Address_CRUD_Exam.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("intro_Address_CRUD_Exam.Models.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("City");
-
-                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("intro_Address_CRUD_Exam.Models.City", b =>

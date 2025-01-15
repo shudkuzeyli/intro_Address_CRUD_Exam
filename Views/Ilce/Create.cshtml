@@ -1,0 +1,79 @@
+﻿@model intro_Address_CRUD_Exam.Models.Ilce
+
+
+<style>
+	.butonuSagaTasi {
+		display: flex;
+		justify-content: flex-end;
+		/* padding:10px; */
+		padding-right: 3px;
+		/* border:1px solid #ccc */
+	}
+</style>
+
+<form asp-controller="Ilce" asp-action="Create" method="post">
+
+	<div class="mb-3">
+		<label asp-for="CountryId" class="form-label">Ülke</label>
+		<select asp-for="CountryId" class="form-control" asp-items="ViewBag.Ulke">
+			<option value="0">Ülke Seçiniz</option>
+		</select>
+		<span asp-validation-for="CountryId" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="CityId" class="form-label">Şehir</label>
+		<select asp-for="CityId" class="form-control" asp-items="ViewBag.Sehir">
+			<option value="0">Şehir Seçiniz</option>
+		</select>
+		<span asp-validation-for="CityId" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-check-label">
+			<input class="form-check-input" asp-for="Aktif" />
+			@Html.DisplayNameFor(model => model.Aktif)
+		</label>
+	</div>
+	<div class="butonuSagaTasi">
+		<a class="btn btn-secondary mr-5" asp-action="Index"><i class="fa fa-arrow-alt-circle-left"></i> Listeye geri dön</a>
+		<button type="submit" class="btn btn-success">Kaydet</button>
+	</div>
+</form>
+
+@section scripts {
+	<script>
+		$("#CountryId").change(function(e){
+		//ülke combobox ındaki değişimden sonra çalışacak fonksiyon
+		//e değişkeni ile ülke combobox ındaki değişen değere ve bir çok farklı bilgiye ulaşabiliriz.
+		//e.target.value -> seçilen satırın Id sini verir.
+		//alert("	seçilen ülke ID: " + e.target.value)
+		var id=e.target.value;
+		$("#CityId").empty();
+		$("#CityId").append(new Option("Şehir Seçiniz...",0));
+
+		//veritabanından, seçilen Ülke nin şehirlerini CityId comboBox ına yükle
+		//*** -> client üzerinden server tarafa gidebilmek için ajax yazmak zorundayız.
+
+		$.ajax({
+		url:"/Ilce/SehirGetir/"+id,
+		type:"POST",
+		contentType:false,
+		prosessData:false,
+		success:function(response)
+		{
+			//SehirGetir action undan dönen veri burada "response" değişkeni ile yakalanır/taşınır
+			//döngü çalıştırarak response dan gelen verilerin CityId combobox ına eklenmesini sağlayacağız
+			//for, foreach, while
+			$.each(response,function(){
+				$("#CityId").append(new Option(this.descp, this.id));
+			});
+		},
+
+
+
+		});
+
+		});
+	</script>
+}
